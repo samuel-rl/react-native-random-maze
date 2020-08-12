@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, Text, Dimensions} from 'react-native';
-
+import { StyleSheet, View, Text, Dimensions } from 'react-native';
 
 const { height, width } = Dimensions.get('window');
 
@@ -12,16 +11,50 @@ const SIZE = width / ITEMS_PER_ROW;
 const ROWS = Math.round((RATIO * height) / SIZE);
 const TOTAL_ITEMS = ITEMS_PER_ROW * ROWS;
 
-const Maze = () => {
+const POSITIONS = ['LEFT', 'RIGHT'];
 
-  return (
-    <View>
-    </View>
-  );
+const getRandomPosition = (arr = POSITIONS) => {
+	return arr[Math.floor(Math.random() * arr.length)];
 };
 
-const styles = StyleSheet.create({
+export interface GridProps {
+	items: { key: number; position: string }[];
+}
+
+const Grid = ({ items }: GridProps) => {
+	return (
+		<View>
+			{items.map((item, key) => {
+                
+
+				return (
+					<View key={key} >
+						<View />
+					</View>
+				);
+			})}
+		</View>
+	);
+};
+
+const Maze = () => {
+    const [items, setItems] = useState([]);
+
+    const constructGrid = () => {
+		let res: { key: number; position: string }[] = [];
+		for (var i = 0; i < TOTAL_ITEMS; ++i) {
+			res.push({ key: i, position: getRandomPosition() });
+		}
+		return res;
+    };
     
-});
+	return (
+		<View>
+			<Grid items={items} />
+		</View>
+	);
+};
+
+const styles = StyleSheet.create({});
 
 export default Maze;
