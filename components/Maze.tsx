@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, Text, Dimensions } from 'react-native';
+import { StyleSheet, View, Text, Dimensions, TouchableOpacity } from 'react-native';
+import Animated from 'react-native-reanimated';
 
 const { height, width } = Dimensions.get('window');
 
 const LINE_WIDTH = 1;
 
 const RATIO = height / width;
-const ITEMS_PER_ROW = 20;
+const ITEMS_PER_ROW = 15;
 const SIZE = width / ITEMS_PER_ROW;
 const ROWS = Math.round((RATIO * height) / SIZE);
 const TOTAL_ITEMS = ITEMS_PER_ROW * ROWS;
@@ -28,11 +29,11 @@ const Grid = ({ items }: GridProps) => {
                 
 
 				return (
-					<View key={key} style={[styles.gridItem, item.position == 'LEFT'
+					<Animated.View key={key} style={[styles.gridItem, item.position == 'LEFT'
                     ? { transform: [{ rotate: '-45deg' }] }
                     : { transform: [{ rotate: '45deg' }] },]}>
 						<View style={styles.gridItemDiagonal} />
-					</View>
+					</Animated.View>
 				);
 			})}
 		</View>
@@ -44,7 +45,11 @@ const Maze = () => {
 
     useEffect(() => {
 		setItems(constructGrid());
-	}, []);
+    }, []);
+    
+    const changeMaze = () => {
+        setItems(constructGrid());
+    }
 
     const constructGrid = () => {
 		let res: { key: number; position: string }[] = [];
@@ -55,9 +60,9 @@ const Maze = () => {
     };
     
 	return (
-		<View>
+		<TouchableOpacity activeOpacity={1} onPress={changeMaze}>
 			<Grid items={items} />
-		</View>
+		</TouchableOpacity>
 	);
 };
 
