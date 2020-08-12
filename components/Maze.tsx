@@ -23,13 +23,15 @@ export interface GridProps {
 
 const Grid = ({ items }: GridProps) => {
 	return (
-		<View>
+		<View style={styles.container}>
 			{items.map((item, key) => {
                 
 
 				return (
-					<View key={key} >
-						<View />
+					<View key={key} style={[styles.gridItem, item.position == 'LEFT'
+                    ? { transform: [{ rotate: '-45deg' }] }
+                    : { transform: [{ rotate: '45deg' }] },]}>
+						<View style={styles.gridItemDiagonal} />
 					</View>
 				);
 			})}
@@ -39,6 +41,10 @@ const Grid = ({ items }: GridProps) => {
 
 const Maze = () => {
     const [items, setItems] = useState([]);
+
+    useEffect(() => {
+		setItems(constructGrid());
+	}, []);
 
     const constructGrid = () => {
 		let res: { key: number; position: string }[] = [];
@@ -55,6 +61,22 @@ const Maze = () => {
 	);
 };
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+	gridItem: {
+		width: SIZE,
+		height: SIZE,
+		alignItems: 'center',
+		justifyContent: 'center',
+	},
+	gridItemDiagonal: {
+		width: LINE_WIDTH,
+		height: Math.sqrt(2) * SIZE,
+		backgroundColor: 'black',
+	},
+	container: {
+		flexDirection: 'row',
+		flexWrap: 'wrap',
+	},
+});
 
 export default Maze;
